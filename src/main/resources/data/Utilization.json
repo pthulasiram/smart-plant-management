@@ -1,0 +1,60 @@
+{
+  "d": {
+    "results": [
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataUtilization.UtilizationType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataUtilization.xsodata/Utilization(Plant='HOU',Months=1)"
+        },
+        "Plant": "HOU",
+        "Months": "Apr",
+        "Utilization": 70
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataUtilization.UtilizationType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataUtilization.xsodata/Utilization(Plant='HOU',Months=2)"
+        },
+        "Plant": "HOU",
+        "Months": "May",
+        "Utilization": 75
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataUtilization.UtilizationType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataUtilization.xsodata/Utilization(Plant='HOU',Months=3)"
+        },
+        "Plant": "HOU",
+        "Months": "Jun",
+        "Utilization": 65
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataUtilization.UtilizationType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataUtilization.xsodata/Utilization(Plant='HOU',Months=4)"
+        },
+        "Plant": "HOU",
+        "Months": "Jul",
+        "Utilization": 80
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataUtilization.UtilizationType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataUtilization.xsodata/Utilization(Plant='HOU',Months=5)"
+        },
+        "Plant": "HOU",
+        "Months": "Aug",
+        "Utilization": 75
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataUtilization.UtilizationType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataUtilization.xsodata/Utilization(Plant='HOU',Months=6)"
+        },
+        "Plant": "HOU",
+        "Months": "Sep",
+        "Utilization": 90
+      }
+    ]
+  }
+}

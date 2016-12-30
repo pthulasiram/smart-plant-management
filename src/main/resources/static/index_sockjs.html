@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="js/sockjs.min.js"></script>
+<script src="js/stomp.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<link href="css/nv.d3.min.css" rel="stylesheet" type="text/css">
+<link href="css/chat.css" rel="stylesheet" type="text/css">
+<script src="js/d3.min.js" charset="utf-8"></script>
+<script src="js/nv.d3.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<script src="js/bootstrap.min.js"></script>
+<style>
+</style>
+<script>
+
+	$(document).ready(function() {
+
+		var modal = $('#chat-bot-dailog');
+		var stompClient = {
+			client : null,
+			socket : null,
+			connect : function() {
+				this.socket = new SockJS('/cosmos/websocket');
+				this.client = Stomp.over(this.socket);
+				//            this.client.debug = null;
+				this.client.connect({}, function(frame) {
+					stompClient.client.subscribe('/topic/chatbot', function(events) {
+						stompClient.consume(events);
+					});
+
+					stompClient.client.subscribe('/topic/count', function(events) {
+						stompClient.consume(events);
+					});
+				});
+			},
+			consume : function(raw) {
+				//console.log("Chart DAta   "+raw);
+				showChart(JSON.parse(raw.body));
+
+			},
+			close : function() {
+
+				if (this.client != null && this.client != undefined) {
+					this.client.unsubscribe('/topic/chatbot');
+					//	this.client.unsubscribe('/topic/count');
+					this.client.disconnect();
+					this.client = null;
+				}
+				closeChart(); // closing chart window
+			}
+		};
+
+		$("#disconnect").click(function() {
+			// disconnect chat bot once done with conversation
+			stompClient.close();
+		});
+		// invoke connect method while initiating chat bot
+		$("#connect").click(function() {
+			stompClient.connect();
+		//showChart();
+		});
+
+
+
+		function getData(groups, points) {
+			var data = [];
+			//shapes = [ 'circle', 'cross', 'triangle-up', 'triangle-down', 'diamond', 'square' ],
+			shapes = [ 'circle' ];
+			random = d3.random.normal();
+
+			for (i = 0; i < groups; i++) {
+				data.push({
+					key : 'Group ' + i,
+					values : []
+				});
+
+				for (j = 0; j < points; j++) {
+					data[i].values.push({
+						x : random() + i,
+						y : Math.floor(Math.random() * 33),
+						size : random() + i, //shape: shapes[j % 6]
+					});
+				}
+			}
+			console.log("data " + JSON.stringify(data));
+			return data;
+		}
+
+		closeChart = function() {
+			$('#chart svg').css('display', 'none');
+		}
+
+
+
+		//nv.addGraph(function() {
+		showChart = function(data) {
+
+			$('#chat-bot-dailog').css('display', 'block');
+			// When the user clicks on <span> (x), close the modal
+			$('#pop-up-close').click(function() {
+				$('#chat-bot-dailog').css('display', 'none');
+			});
+
+			// When the user clicks anywhere outside of the modal, close it
+			window.onclick = function(event) {
+				if (event.target == $('#chat-bot-dailog')) {
+					$('#chat-bot-dailog').css('display', 'none');
+				}
+			}
+
+			var chart = nv.models.scatterChart()
+				.showDistX(true)
+				.showDistY(true)
+				.xDomain([ 0, 40 ])
+
+				.color(d3.scale.category10().range());
+
+			chart.xAxis.tickFormat(d3.format('f'));
+			chart.yAxis.tickFormat(d3.format('f'));
+			chart.yAxis.ticks(30);
+			chart.xAxis.ticks(40);
+			//chart.yAxis.tickValues([ '2', '4', '8', '16', '32' ]);
+			chart.yAxis.axisLabel("Temparature (in %)")
+			chart.xAxis.axisLabel("Engine")
+			//var data = '[{"values":[{"size":4,"x":13,"y":13}],"key":"Engine 3"},{"values":[{"size":5,"x":14,"y":14}],"key":"Engine 4"},{"values":[{"size":6,"x":15,"y":15}],"key":"Engine 5"},{"values":[{"size":7,"x":16,"y":16}],"key":"Engine 6"},{"values":[{"size":8,"x":17,"y":17}],"key":"Engine 7"},{"values":[{"size":9,"x":18,"y":18}],"key":"Engine 8"},{"values":[{"size":10,"x":19,"y":19}],"key":"Engine 9"}]';
+			//var data = getData(1, 1);
+			//var data = '[{"key":"Group 0","values":[{"x":-0.025985051591624536,"y":21,"size":-0.8444964259186657}]}]';
+			console.log(data);
+			d3.select('#chart svg')
+				.datum(data)
+				.transition().duration(500)
+				.call(chart);
+
+			/* var line = d3.select('#chart svg')
+			    .append('line')
+			    .attr({
+			        x1: 75 + chart.xAxis.scale()(0),
+			        y1: 30 + chart.yAxis.scale()(10),
+			        x2: 75 + chart.xAxis.scale()(3),
+			        y2: 30 + chart.yAxis.scale()(10)
+			    })
+			    .style("stroke", "#000"); */
+
+			nv.utils.windowResize(function() {
+				chart.update();
+				line.attr({
+					x1 : 75 + chart.xAxis.scale()(0),
+					y1 : 30 + chart.yAxis.scale()(10),
+					x2 : 75 + chart.xAxis.scale()(3),
+					y2 : 30 + chart.yAxis.scale()(10)
+				})
+
+			});
+		}
+
+		invokeChatAPI("chat-init");
+		stompClient.connect();
+		var i = 1;
+		$("#btn-chat").click(function() {
+			var query = $('#chat-msg').val();
+			//updateResponse("Hi, How I can help you !");
+			sendMessage(query);
+
+		});
+		$('#chat-msg').keypress(function(event) {
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+			if (keycode == '13') {
+				var query = $('#chat-msg').val();
+				//updateResponse("Hi, How I can help you !");
+				sendMessage(query);
+			}
+		});
+
+
+		function sendMessage(message) {
+			i = i + 1;
+			var message_el = '<h4 class="media-heading"><b>Admin</b></h4><p> ' + message + ' </p>';
+			var chat_con_right_el = '<div class="media right-media" id="chat-conv-r' + i + '"></div>';
+			//alert(chat_con_right_el);
+			var chat_head_right_el = '<div class="media-right"><img src="images/user.png" class="media-object" style="width:60px"></div>';
+			var msg_body_el = ' <div class="media-body" id="msg-container-r' + i + '"></div>';
+			$("#chat-container").append(chat_con_right_el);
+			$("#chat-conv-r" + i).append(msg_body_el);
+			//	$("#chat-conv-r" + i).append(chat_head_right_el);
+			$("#msg-container-r" + i).append(message_el);
+			updateScroll();
+			$('#chat-msg').val('');
+			invokeChatAPI(message);
+
+
+
+		}
+
+		function updateResponse(message) {
+			//alert("apending text");
+			var message_el = '<h4 class="media-heading"><b>Chat Bot</b></h4><p> ' + message + ' </p>';
+			var chat_con_left_el = '<div class="media left-media" id="chat-conv' + i + '"></div>';
+			var chat_head_left_el = '<div class="media-left"> <img src="images/bot.png" class="media-object" style="width:60px"></div>';
+			var msg_body_el = ' <div class="media-body" id="msg-container' + i + '"></div>';
+			$("#chat-container").append(chat_con_left_el);
+
+			//$("#chat-conv" + i).append(chat_head_left_el);
+			$("#chat-conv" + i).append(msg_body_el);
+			$("#msg-container" + i).append(message_el);
+			updateScroll();
+
+		}
+
+		function updateScroll() {
+			var scrolled = false;
+			if (!scrolled) {
+				var element = document.getElementById("chat-container");
+				element.scrollTop = element.scrollHeight;
+			}
+		}
+
+		function invokeChatAPI(query) {
+			//alert("inside fetch")
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "nlp/chatbot/" + query, true);
+			xhr.withCredentials = true;
+			xhr.setRequestHeader("Authorization", 'Basic ' + btoa('user:user'));
+			console.log("abc");
+			xhr.onload = function() {
+				console.log("loading");
+				console.log(xhr.responseText);
+				updateResponse(xhr.responseText);
+
+			}
+			xhr.send();
+		}
+		$("#chat-container").on('scroll', function() {
+			scrolled = true;
+		});
+	});
+</script>
+</head>
+
+<body>
+
+	<!-- <button id="connect">Connect</button>
+	<br>
+	<button id="ping">Send Ping</button>
+	<br>
+	<button id="disconnect">Disconnect</button> -->
+
+	<script>
+	
+		// Get the modal
+		var modal = $('#chat-bot-dailog');
+		var stompClient = {
+			client : null,
+			socket : null,
+			connect : function() {
+				this.socket = new SockJS('/cosmos/websocket');
+				this.client = Stomp.over(this.socket);
+				//            this.client.debug = null;
+				this.client.connect({}, function(frame) {
+					stompClient.client.subscribe('/topic/chatbot', function(events) {
+						stompClient.consume(events);
+					});
+	
+					stompClient.client.subscribe('/topic/count', function(events) {
+						stompClient.consume(events);
+					});
+				});
+			},
+			consume : function(raw) {
+				//console.log("Chart DAta   "+raw);
+				showChart(JSON.parse(raw.body));
+	
+			},
+			close : function() {
+	
+				if (this.client != null && this.client != undefined) {
+					this.client.unsubscribe('/topic/chatbot');
+					//	this.client.unsubscribe('/topic/count');
+					this.client.disconnect();
+					this.client = null;
+				}
+				closeChart(); // closing chart window
+			}
+		};
+	
+		$("#disconnect").click(function() {
+			// disconnect chat bot once done with conversation
+			stompClient.close();
+		});
+		// invoke connect method while initiating chat bot
+		$("#connect").click(function() {
+			stompClient.connect();
+		//showChart();
+		});
+	
+	
+		stompClient.connect();
+		function getData(groups, points) {
+			var data = [];
+			//shapes = [ 'circle', 'cross', 'triangle-up', 'triangle-down', 'diamond', 'square' ],
+			shapes = [ 'circle' ];
+			random = d3.random.normal();
+	
+			for (i = 0; i < groups; i++) {
+				data.push({
+					key : 'Group ' + i,
+					values : []
+				});
+	
+				for (j = 0; j < points; j++) {
+					data[i].values.push({
+						x : random() + i,
+						y : Math.floor(Math.random() * 33),
+						size : random() + i, //shape: shapes[j % 6]
+					});
+				}
+			}
+			console.log("data " + JSON.stringify(data));
+			return data;
+		}
+	
+		closeChart = function() {
+			$('#chart svg').css('display', 'none');
+		}
+	
+	
+	
+		//nv.addGraph(function() {
+		showChart = function(data) {
+	
+			$('#chat-bot-dailog').css('display', 'block');
+			// When the user clicks on <span> (x), close the modal
+			$('#pop-up-close').click(function() {
+				$('#chat-bot-dailog').css('display', 'none');
+			});
+	
+			// When the user clicks anywhere outside of the modal, close it
+			window.onclick = function(event) {
+				if (event.target == $('#chat-bot-dailog')) {
+					$('#chat-bot-dailog').css('display', 'none');
+				}
+			}
+	
+			var chart = nv.models.scatterChart()
+				.showDistX(true)
+				.showDistY(true)
+				.xDomain([ 0, 40 ])
+	
+				.color(d3.scale.category10().range());
+	
+			chart.xAxis.tickFormat(d3.format('f'));
+			chart.yAxis.tickFormat(d3.format('f'));
+			chart.yAxis.ticks(30);
+			chart.xAxis.ticks(40);
+			//chart.yAxis.tickValues([ '2', '4', '8', '16', '32' ]);
+			chart.yAxis.axisLabel("Temparature (in %)")
+			chart.xAxis.axisLabel("Engine")
+			//var data = '[{"values":[{"size":4,"x":13,"y":13}],"key":"Engine 3"},{"values":[{"size":5,"x":14,"y":14}],"key":"Engine 4"},{"values":[{"size":6,"x":15,"y":15}],"key":"Engine 5"},{"values":[{"size":7,"x":16,"y":16}],"key":"Engine 6"},{"values":[{"size":8,"x":17,"y":17}],"key":"Engine 7"},{"values":[{"size":9,"x":18,"y":18}],"key":"Engine 8"},{"values":[{"size":10,"x":19,"y":19}],"key":"Engine 9"}]';
+			//var data = getData(1, 1);
+			//var data = '[{"key":"Group 0","values":[{"x":-0.025985051591624536,"y":21,"size":-0.8444964259186657}]}]';
+			console.log(data);
+			d3.select('#chart svg')
+				.datum(data)
+				.transition().duration(500)
+				.call(chart);
+	
+			/* var line = d3.select('#chart svg')
+			    .append('line')
+			    .attr({
+			        x1: 75 + chart.xAxis.scale()(0),
+			        y1: 30 + chart.yAxis.scale()(10),
+			        x2: 75 + chart.xAxis.scale()(3),
+			        y2: 30 + chart.yAxis.scale()(10)
+			    })
+			    .style("stroke", "#000"); */
+	
+			nv.utils.windowResize(function() {
+				chart.update();
+				line.attr({
+					x1 : 75 + chart.xAxis.scale()(0),
+					y1 : 30 + chart.yAxis.scale()(10),
+					x2 : 75 + chart.xAxis.scale()(3),
+					y2 : 30 + chart.yAxis.scale()(10)
+				})
+	
+			});
+		}
+		/* 
+				return chart;
+			}); */
+	</script>
+	<!-- The Modal -->
+
+	<div id="chat-bot-dailog" id="myModal" class="modal">
+
+		<!-- Modal content -->
+		<div class="modal-content">
+			<div class="modal-header">
+				<span id="pop-up-close" class="close">&#x274C;</span>
+			</div>
+			<div class="modal-body">
+				<div id="chart">
+					<svg></svg>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row form-group">
+			<div
+				class="col-xs-12 col-md-offset-2 col-md-8 col-lg-8 col-lg-offset-2">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<span class="glyphicon glyphicon-comment"></span> ChatBot
+						<div class="btn-group pull-right">
+							<button type="button"
+								class="btn btn-default btn-xs dropdown-toggle"
+								data-toggle="dropdown">
+								<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+
+						</div>
+					</div>
+					<div class="panel-body body-panel" id="chat-container"
+						onload="fetchResponse('')"></div>
+					<div class="panel-footer clearfix">
+						<textarea class="form-control" rows="3" name="chatMessage"
+							id="chat-msg"></textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

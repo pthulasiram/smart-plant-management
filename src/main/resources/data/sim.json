@@ -1,0 +1,120 @@
+{
+  "d": {
+    "results": [
+      {
+        "__metadata": {
+          "type": "ODataPH.Odataengine.EngineType",
+          "uri": "http://52.1.74.127:8000/ODataPH/Odataengine.xsodata/Engine(cycle_no='1',engine_no='1')"
+        },
+        "Pressure": "-0.00069999999999999999",
+        "Speed_RPM": "200",
+        "Flowrate": "-0.00040000000000000002",
+        "cycle_no": "1",
+        "engine_no": "1",
+        "test_rf": "7",
+        "engine_id": "Pump,Etanorm 200-1000 GG-m",
+        "Equipment_No": "10000957",
+        "Source": "Act",
+        "Cost": "3000"
+      },
+       {
+        "__metadata": {
+          "type": "ODataPH.Odataengine.EngineType",
+          "uri": "http://52.1.74.127:8000/ODataPH/Odataengine.xsodata/Engine(cycle_no='1',engine_no='1')"
+        },
+        "Pressure": "-0.00069999999999999999",
+        "Speed_RPM": "200",
+        "Flowrate": "-0.00040000000000000002",
+        "cycle_no": "1",
+        "engine_no": "1",
+        "test_rf": "10",
+        "engine_id": "Pump,Etanorm 210-1000 GG-m",
+        "Equipment_No": "10010957",
+        "Source": "Act",
+        "Cost": "3500"
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.Odataengine.EngineType",
+          "uri": "http://52.1.74.127:8000/ODataPH/Odataengine.xsodata/Engine(cycle_no='1',engine_no='10')"
+        },
+        "Pressure": "-0.0014",
+        "Speed_RPM": "200",
+        "Flowrate": "0.00040000000000000002",
+        "cycle_no": "1",
+        "engine_no": "10",
+        "test_rf": "2.6",
+        "engine_id": "PUMP,ELECTRIC,150-200 GPM",
+        "Equipment_No": "10002520",
+        "Source": "Act",
+        "Cost": "2000"
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.Odataengine.EngineType",
+          "uri": "http://52.1.74.127:8000/ODataPH/Odataengine.xsodata/Engine(cycle_no='1',engine_no='11')"
+        },
+        "Pressure": "0.00050000000000000001",
+        "Speed_RPM": "200",
+        "Flowrate": "-0.00029999999999999997",
+        "cycle_no": "1",
+        "engine_no": "11",
+        "test_rf": "3.852",
+        "engine_id": "PUMP,ELECTRIC,150-200 GPM",
+        "Equipment_No": "10002521",
+        "Source": "Act",
+        "Cost": "1200"
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.Odataengine.EngineType",
+          "uri": "http://52.1.74.127:8000/ODataPH/Odataengine.xsodata/Engine(cycle_no='1',engine_no='16')"
+        },
+        "Pressure": "0.00040000000000000002",
+        "Speed_RPM": "200",
+        "Flowrate": "0.00020000000000000001",
+        "cycle_no": "1",
+        "engine_no": "16",
+        "test_rf": "1.2",
+        "engine_id": "PUMP,ELECTRIC,150-200 GPM",
+        "Equipment_No": "10002526",
+        "Source": "Act",
+        "Cost": "3500"
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.Odataengine.EngineType",
+          "uri": "http://52.1.74.127:8000/ODataPH/Odataengine.xsodata/Engine(cycle_no='1',engine_no='22')"
+        },
+        "Pressure": "0",
+        "Speed_RPM": "200",
+        "Flowrate": "-0.00029999999999999997",
+        "cycle_no": "1",
+        "engine_no": "22",
+        "test_rf": "2.1",
+        "engine_id": "Pump,electric,150-200 GPM",
+        "Equipment_No": "10002532",
+        "Source": "Act",
+        "Cost": "4663"
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.Odataengine.EngineType",
+          "uri": "http://52.1.74.127:8000/ODataPH/Odataengine.xsodata/Engine(cycle_no='1',engine_no='23')"
+        },
+        "Pressure": "0.0027000000000000001",
+        "Speed_RPM": "200",
+        "Flowrate": "0.00050000000000000001",
+        "cycle_no": "1",
+        "engine_no": "23",
+        "test_rf": "3.9",
+        "engine_id": "PUMP,ELECTRIC,150-200 GPM",
+        "Equipment_No": "10002533",
+        "Source": "Act",
+        "Cost": "4789"
+      }
+      
+
+         ]
+  }
+}

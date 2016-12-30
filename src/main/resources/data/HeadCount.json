@@ -1,0 +1,60 @@
+{
+  "d": {
+    "results": [
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataHeadCount.HeadCountType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataHeadCount.xsodata/HeadCount(Plant='HOU',Week=1)"
+        },
+        "Plant": "HOU",
+        "Week": 1,
+        "HeadCount": 100
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataHeadCount.HeadCountType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataHeadCount.xsodata/HeadCount(Plant='HOU',Week=2)"
+        },
+        "Plant": "HOU",
+        "Week": 2,
+        "HeadCount": 250
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataHeadCount.HeadCountType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataHeadCount.xsodata/HeadCount(Plant='HOU',Week=3)"
+        },
+        "Plant": "HOU",
+        "Week": 3,
+        "HeadCount": 225
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataHeadCount.HeadCountType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataHeadCount.xsodata/HeadCount(Plant='HOU',Week=4)"
+        },
+        "Plant": "HOU",
+        "Week": 4,
+        "HeadCount": 250
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataHeadCount.HeadCountType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataHeadCount.xsodata/HeadCount(Plant='HOU',Week=5)"
+        },
+        "Plant": "HOU",
+        "Week": 5,
+        "HeadCount": 245
+      },
+      {
+        "__metadata": {
+          "type": "ODataPH.OdataHeadCount.HeadCountType",
+          "uri": "http://52.1.74.127:8000/ODataPH/OdataHeadCount.xsodata/HeadCount(Plant='HOU',Week=6)"
+        },
+        "Plant": "HOU",
+        "Week": 6,
+        "HeadCount": 250
+      }
+    ]
+  }
+}
