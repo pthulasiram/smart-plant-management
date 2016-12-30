@@ -94,36 +94,6 @@ public class UtilizationObj  {
 		return "Student [__metadata=" + __metadata + ", Plant=" + Plant + ", Months=" + Months + ", Utilization="
 				+ Utilization + "]";
 	}
-	public static void main(String args[]){
-	/*	Apr  70
-		Aug  75
-		Jul  80
-		Jun  65
-		May  75
-		Sep  90*/
- 	   ArrayList<UtilizationObj> arraylist = new ArrayList<UtilizationObj>();
- 	   arraylist.add(new UtilizationObj(null, "Zues", "Apr",26));
- 	   arraylist.add(new UtilizationObj(null, "Abey", "Aug",24));
- 	   arraylist.add(new UtilizationObj(null,"Vignesh","Jul", 32));
- 	  arraylist.add(new UtilizationObj(null,"Vignesh","Jun", 32));
- 	 arraylist.add(new UtilizationObj(null,"Vignesh","May", 32));
- 	 arraylist.add(new UtilizationObj(null,"Vignesh","Sep", 32));
-
- 	   //Sorting based on Student Name
- 	   System.out.println("Student Name Sorting:");
- 	  // Collections.sort(arraylist, UtilizationObj.utilizationMonthsComparator);
- 	  Collections.sort(arraylist, new BeanComparator("Months"));
-
- 	   for(UtilizationObj str: arraylist){
- 			System.out.println(str);
- 	   }
-
-// 	   /* Sorting on Rollno property*/
-// 	   System.out.println("RollNum Sorting:");
-// 	   Collections.sort(arraylist, Student.StuRollno);
-// 	   for(Student str: arraylist){
-// 			System.out.println(str);
-// 	   }
- 	}
+	
 }
 
